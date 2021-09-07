@@ -22,6 +22,7 @@ yarn purge
 yarn scan
 yarn scan:lsi1
 yarn scan:gsi1
+yarn scan:gsi2
 ```
 
 ## Teardown

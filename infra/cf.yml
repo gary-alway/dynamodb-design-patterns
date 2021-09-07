@@ -15,6 +15,8 @@ Resources:
           AttributeType: S
         - AttributeName: lsi1
           AttributeType: S
+        - AttributeName: gsi2
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -39,3 +41,9 @@ Resources:
               KeyType: HASH
             - AttributeName: pk
               KeyType: RANGE
+        - IndexName: gsi2
+          Projection:
+            ProjectionType: ALL
+          KeySchema:
+            - AttributeName: gsi2
+              KeyType: HASH

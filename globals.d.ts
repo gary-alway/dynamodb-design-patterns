@@ -13,3 +13,11 @@ declare type Audit = {
 }
 
 declare type EquipmentRecord = Equipment & Audit
+
+declare type Score = {
+  playerId: string
+  gameId: string
+  score: number
+  timestamp: string
+  award?: string
+}

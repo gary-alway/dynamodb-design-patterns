@@ -14,3 +14,11 @@ export const testEquipment = (
   name: lorem.words(3),
   ...overrides
 })
+
+export const testPlayerScore = (overrides: Partial<Score> = {}): Score => ({
+  playerId: datatype.uuid(),
+  gameId: datatype.uuid(),
+  score: datatype.number(),
+  timestamp: new Date().toISOString(),
+  ...overrides
+})
