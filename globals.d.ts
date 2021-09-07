@@ -12,4 +12,4 @@ declare type Audit = {
   latest?: number
 }
 
-declare type EquipmentRecord = Omit<Equipment & Audit, 'id'>
+declare type EquipmentRecord = Equipment & Audit

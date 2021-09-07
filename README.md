@@ -20,6 +20,8 @@ yarn purge
 
 ```bash
 yarn scan
+yarn scan:lsi1
+yarn scan:gsi1
 ```
 
 ## Teardown

@@ -1,18 +1,20 @@
 import { DynamoDB } from 'aws-sdk'
-import { PutItemInputAttributeMap } from 'aws-sdk/clients/dynamodb'
+import { PutItemInputAttributeMap, QueryInput } from 'aws-sdk/clients/dynamodb'
 import { omit, pathOr } from 'ramda'
 import { DDB_TABLE } from '../constants'
 import { DynamoClient } from '../dynamoClient'
 
+const PREFIX = 'equipment#'
+
 const getKeyForId = (id: string, version = 0) =>
-  ({ pk: id, sk: `v${version}` } as DynamoDB.Key)
+  ({ pk: `${PREFIX}${id}`, sk: `v${version}` } as DynamoDB.Key)
 
 const dynamoRecordToRecord = (record: any): EquipmentRecord => {
-  const { pk, sk, ...data } = record
+  const { pk, sk, lsi1, ...data } = record
 
   return {
     ...data,
-    id: pk
+    id: (pk as string).replace(PREFIX, '')
   }
 }
 
@@ -25,7 +27,7 @@ export const equipmentServiceFactory = (client: DynamoClient) => {
     client
       .getItem({
         TableName: DDB_TABLE,
-        Key: getKeyForId(id, version)
+        Key: getKeyForId(id.replace(PREFIX, ''), version)
       })
       .then(res => {
         const record = pathOr(undefined, ['Item'], res)
@@ -41,11 +43,12 @@ export const equipmentServiceFactory = (client: DynamoClient) => {
     username: string,
     result: AuditResult = 'pass'
   ): Promise<void> => {
-    const existing = await getEquipment(item.id)
+    const id = item.id.replace(PREFIX, '')
+    const existing = await getEquipment(id)
 
     const latestVersion = existing ? existing.latest! + 1 : 1
 
-    const record: EquipmentRecord = {
+    const record: Omit<EquipmentRecord, 'id'> = {
       name: item.name,
       username,
       timestamp: new Date().toISOString(),
@@ -59,7 +62,7 @@ export const equipmentServiceFactory = (client: DynamoClient) => {
           Put: {
             TableName: DDB_TABLE,
             Item: {
-              ...getKeyForId(item.id),
+              ...getKeyForId(id),
               ...record
             } as PutItemInputAttributeMap
           }
@@ -68,8 +71,9 @@ export const equipmentServiceFactory = (client: DynamoClient) => {
           Put: {
             TableName: DDB_TABLE,
             Item: {
-              ...getKeyForId(item.id, latestVersion),
-              ...omit(['latest'], record)
+              ...getKeyForId(id, latestVersion),
+              ...omit(['latest'], record),
+              lsi1: result
             } as PutItemInputAttributeMap
           }
         }
@@ -77,10 +81,50 @@ export const equipmentServiceFactory = (client: DynamoClient) => {
     })
   }
 
+  const getEquipmentByAuditResult = async (id: string, result: AuditResult) =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        IndexName: 'lsi1',
+        KeyConditionExpression: '#pk = :pk and #lsi1 = :lsi1',
+        ExpressionAttributeNames: {
+          '#pk': 'pk',
+          '#lsi1': 'lsi1'
+        },
+        ExpressionAttributeValues: {
+          ':pk': `${PREFIX}${id}`,
+          ':lsi1': result
+        }
+      } as QueryInput)
+      .then(res =>
+        pathOr<EquipmentRecord[]>([], ['Items'], res).map(dynamoRecordToRecord)
+      )
+
+  const getAllEquipment = async () =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        IndexName: 'gsi1',
+        KeyConditionExpression: '#sk = :sk and begins_with (#pk, :pk)',
+        ExpressionAttributeNames: {
+          '#pk': 'pk',
+          '#sk': 'sk'
+        },
+        ExpressionAttributeValues: {
+          ':pk': PREFIX,
+          ':sk': 'v0'
+        }
+      } as QueryInput)
+      .then(res =>
+        pathOr<EquipmentRecord[]>([], ['Items'], res).map(dynamoRecordToRecord)
+      )
+
   return {
     getEquipment,
     getEquipmentByVersion,
-    saveEquipment
+    saveEquipment,
+    getAllEquipment,
+    getEquipmentByAuditResult
   }
 }
 

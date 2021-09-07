@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "purge": "ts-node --files --project tsconfig.json test/purge.cmd",
     "test": "jest ./test",
-    "scan": "awslocal dynamodb scan --table-name demo"
+    "scan": "awslocal dynamodb scan --table-name demo",
+    "scan:gsi1": "awslocal dynamodb scan --table-name demo --index-name gsi1",
+    "scan:lsi1": "awslocal dynamodb scan --table-name demo --index-name lsi1"
   },
   "dependencies": {
     "aws-sdk": "^2.978.0",

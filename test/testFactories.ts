@@ -1,7 +1,7 @@
-import { datatype, lorem, name } from 'faker'
+import { datatype, internet, lorem } from 'faker'
 
 export const testAudit = (overrides: Partial<Audit> = {}): Audit => ({
-  username: name.firstName(),
+  username: internet.userName(),
   timestamp: new Date().toISOString(),
   result: 'pass',
   ...overrides
@@ -11,6 +11,6 @@ export const testEquipment = (
   overrides: Partial<Equipment> = {}
 ): Equipment => ({
   id: datatype.uuid(),
-  name: lorem.word(),
+  name: lorem.words(3),
   ...overrides
 })

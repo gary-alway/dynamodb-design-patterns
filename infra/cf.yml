@@ -13,9 +13,29 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
+        - AttributeName: lsi1
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
         - AttributeName: sk
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
+      LocalSecondaryIndexes:
+        - IndexName: lsi1
+          Projection:
+            ProjectionType: ALL
+          KeySchema:
+            - AttributeName: pk
+              KeyType: HASH
+            - AttributeName: lsi1
+              KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: gsi1
+          Projection:
+            ProjectionType: ALL
+          KeySchema:
+            - AttributeName: sk
+              KeyType: HASH
+            - AttributeName: pk
+              KeyType: RANGE
