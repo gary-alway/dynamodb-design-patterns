@@ -1,0 +1,39 @@
+{
+  "name": "dynamodb-design-patterns",
+  "version": "1.0.0",
+  "repository": "https://github.com/garydouglasalway/dynamodb-design-patterns.git",
+  "author": "Gary Alway",
+  "license": "MIT",
+  "scripts": {
+    "local:up": "make -C ./infra up",
+    "local:down": "make -C ./infra down",
+    "format": "prettier {src,test} --write",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint .",
+    "purge": "ts-node --files --project tsconfig.json test/purge.cmd",
+    "test": "jest ./test",
+    "scan": "awslocal dynamodb scan --table-name demo"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.978.0",
+    "ramda": "^0.27.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/faker": "^5.5.8",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.4",
+    "@types/ramda": "^0.27.44",
+    "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^7.32.0",
+    "faker": "^5.5.3",
+    "jest": "^27.1.0",
+    "prettier": "^2.3.2",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  }
+}
