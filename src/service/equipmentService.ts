@@ -18,19 +18,6 @@ const dynamoRecordToRecord = (record: any): EquipmentRecord => {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const equipmentServiceFactory = (client: DynamoClient) => {
-  const getEquipment = async (
-    id: string
-  ): Promise<EquipmentRecord | undefined> =>
-    client
-      .getItem({
-        TableName: DDB_TABLE,
-        Key: getKeyForId(id, 0)
-      })
-      .then(res => {
-        const record = pathOr(undefined, ['Item'], res)
-        return record ? dynamoRecordToRecord(record) : undefined
-      })
-
   const getEquipmentByVersion = async (
     id: string,
     version: number
@@ -44,6 +31,10 @@ export const equipmentServiceFactory = (client: DynamoClient) => {
         const record = pathOr(undefined, ['Item'], res)
         return record ? dynamoRecordToRecord(record) : undefined
       })
+
+  const getEquipment = async (
+    id: string
+  ): Promise<EquipmentRecord | undefined> => getEquipmentByVersion(id, 0)
 
   const saveEquipment = async (
     item: Equipment,
