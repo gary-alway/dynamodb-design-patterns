@@ -24,6 +24,8 @@ yarn scan:lsi1
 yarn scan:gsi1
 yarn scan:gsi2
 
+awslocal dynamodb update-time-to-live --table-name demo --time-to-live-specification Enabled=true,AttributeName=ttl
+
 awslocal dynamodb describe-time-to-live --table-name demo
 ```
 

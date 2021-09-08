@@ -4,6 +4,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: demo
+      # todo: this has no effect, see readme for setting this via CLI
       TimeToLiveSpecification:
         Enabled: true
         AttributeName: ttl
