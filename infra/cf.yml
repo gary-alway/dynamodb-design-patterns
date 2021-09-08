@@ -4,6 +4,9 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: demo
+      TimeToLiveSpecification:
+        Enabled: true
+        AttributeName: ttl
       SSESpecification:
         SSEEnabled: true
       PointInTimeRecoverySpecification:
@@ -16,6 +19,8 @@ Resources:
         - AttributeName: lsi1
           AttributeType: S
         - AttributeName: gsi2
+          AttributeType: S
+        - AttributeName: ttl
           AttributeType: S
       KeySchema:
         - AttributeName: pk
