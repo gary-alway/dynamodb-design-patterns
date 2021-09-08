@@ -23,6 +23,7 @@ yarn scan
 yarn scan:lsi1
 yarn scan:gsi1
 yarn scan:gsi2
+yarn scan:gsi3
 
 awslocal dynamodb update-time-to-live --table-name demo --time-to-live-specification Enabled=true,AttributeName=ttl
 

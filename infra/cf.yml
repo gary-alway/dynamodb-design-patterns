@@ -21,6 +21,8 @@ Resources:
           AttributeType: S
         - AttributeName: gsi2
           AttributeType: S
+        - AttributeName: gsi3
+          AttributeType: S
         - AttributeName: ttl
           AttributeType: S
       KeySchema:
@@ -53,3 +55,11 @@ Resources:
           KeySchema:
             - AttributeName: gsi2
               KeyType: HASH
+        - IndexName: gsi3
+          Projection:
+            ProjectionType: ALL
+          KeySchema:
+            - AttributeName: sk
+              KeyType: HASH
+            - AttributeName: gsi3
+              KeyType: RANGE
