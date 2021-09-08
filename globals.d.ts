@@ -40,3 +40,14 @@ declare type Book = {
   title: string
   release_year: number
 }
+
+declare type Ingredient = {
+  id: string
+  name: string
+}
+
+declare type Recipe = {
+  id: string
+  title: string
+  ingredients: Ingredient[]
+}

@@ -36,3 +36,18 @@ export const testCustomer = (overrides: Partial<Customer> = {}): Customer => ({
   addresses: [testAddress()],
   ...overrides
 })
+
+export const testIngredient = (
+  overrides: Partial<Ingredient> = {}
+): Ingredient => ({
+  id: datatype.uuid(),
+  name: lorem.word(),
+  ...overrides
+})
+
+export const testRecipe = (overrides: Partial<Recipe> = {}): Recipe => ({
+  id: datatype.uuid(),
+  title: lorem.words(4),
+  ingredients: [testIngredient(), testIngredient(), testIngredient()],
+  ...overrides
+})

@@ -7,6 +7,8 @@ import { testAddress, testCustomer } from '../testFactories'
 const customerService = customerServiceFactory(testDynamoClient)
 const bookService = bookServiceFactory(testDynamoClient)
 
+// https://www.alexdebrie.com/posts/dynamodb-one-to-many/
+
 describe('managing one to many relationships', () => {
   describe('books', () => {
     it('model relationship between book and author', async () => {
