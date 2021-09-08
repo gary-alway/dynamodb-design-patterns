@@ -21,3 +21,22 @@ declare type Score = {
   timestamp: string
   award?: string
 }
+
+declare type Address = {
+  firstLine: string
+  secondLine?: string
+  city: string
+  postcode: string
+}
+
+declare type Customer = {
+  id: string
+  username: string
+  addresses: Address[]
+}
+
+declare type Book = {
+  author: string
+  title: string
+  release_year: number
+}

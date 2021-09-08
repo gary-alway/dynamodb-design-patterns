@@ -73,4 +73,4 @@ export const gameServiceFactory = (client: DynamoClient) => {
   }
 }
 
-export type EquipmentService = ReturnType<typeof gameServiceFactory>
+export type GameService = ReturnType<typeof gameServiceFactory>
